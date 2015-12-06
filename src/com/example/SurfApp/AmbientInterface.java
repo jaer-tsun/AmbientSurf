@@ -1,13 +1,11 @@
 package com.example.SurfApp;
 
 import android.app.Activity;
-import android.app.Service;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
@@ -20,8 +18,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * author      : Jaeryn
@@ -70,12 +66,12 @@ public class AmbientInterface extends Activity
         initializeApp();
     }
 
-//    @Override
-//    public void onDestroy()
-//    {
-//        super.onDestroy();
-//        startService(new Intent(this, RunInBackground.class));
-//    }
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        startService(new Intent(this, AmbientService.class));
+    }
 
     /**
      * method      : initializeApp
@@ -289,47 +285,4 @@ public class AmbientInterface extends Activity
         }
     }
 }
-
-//class RunInBackground extends Service
-//{
-//    @Override
-//    public int onStartCommand(Intent intent, int flags, int startId)
-//    {
-//        return START_NOT_STICKY;
-//    }
-//
-//    @Override
-//    public IBinder onBind(Intent intent)
-//    {
-//        return null;
-//    }
-//
-//    @Override
-//    public void onCreate()
-//    {
-//        Date now = new Date();
-//        String timeStamp = new SimpleDateFormat("ddMMyyyyHHmm").format(now);
-//
-//        while(!(timeStamp.charAt(timeStamp.length() - 1) % 2 == 0))
-//        {
-//            now = new Date();
-//            timeStamp = new SimpleDateFormat("ddMMyyyyHHmm").format(now);
-//
-//                String package_name = getPackageName();
-//
-//                getPackageManager().setComponentEnabledSetting(
-//                        new ComponentName(package_name, package_name + ".AmbientInterface-green"),
-//                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-//
-//                getPackageManager().setComponentEnabledSetting(
-//                        new ComponentName(package_name, package_name + ".AmbientInterface-yellow"),
-//                        PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-//
-//                getPackageManager().setComponentEnabledSetting(
-//                        new ComponentName(package_name, package_name + ".AmbientInterface-red"),
-//                        PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-//
-//        }
-//    }
-//}
 
