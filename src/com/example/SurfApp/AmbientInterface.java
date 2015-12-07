@@ -53,7 +53,8 @@ public class AmbientInterface extends Activity
     private int min_wave = 0;
     private int max_wave = 1;
 
-    public String user_location;
+    private String state;
+    private String user_location;
     public int avg_surf;
 
     @Override
@@ -74,6 +75,7 @@ public class AmbientInterface extends Activity
         intent.putExtra("min_wave", min_wave);
         intent.putExtra("max_wave", max_wave);
         intent.putExtra("location", user_location);
+        intent.putExtra("state", state);
         startService(intent);
     }
 
@@ -181,8 +183,7 @@ public class AmbientInterface extends Activity
      * description : This method calls the execute method from FetchWebsiteData which determines the average
      *               surf height and assigns it to the public variable avg_surf (int). Then, the application
      *               icon will be modified based on the relationship between avg_surf and user input.
-     *               This method is invoked when the user clicks on the submit button or it may also be
-     *               automatically called hourly/semi-daily/daily/etc.
+     *               This method is invoked when the user clicks on the submit button.
      */
     private void submitted()
     {
@@ -197,8 +198,10 @@ public class AmbientInterface extends Activity
 
         if(avg_surf < min_wave)
         {
+            state = ".AmbientInterface-red";
+
             getPackageManager().setComponentEnabledSetting(
-                    new ComponentName(package_name, package_name + ".AmbientInterface-red"),
+                    new ComponentName(package_name, package_name + state),
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
 
             getPackageManager().setComponentEnabledSetting(
@@ -211,8 +214,10 @@ public class AmbientInterface extends Activity
         }
         else if(avg_surf > max_wave)
         {
+            state = ".AmbientInterface-yellow";
+
             getPackageManager().setComponentEnabledSetting(
-                    new ComponentName(package_name, package_name + ".AmbientInterface-yellow"),
+                    new ComponentName(package_name, package_name + state),
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
 
             getPackageManager().setComponentEnabledSetting(
@@ -225,8 +230,10 @@ public class AmbientInterface extends Activity
         }
         else if (avg_surf >= min_wave && avg_surf <= max_wave)
         {
+            state = ".AmbientInterface-green";
+
             getPackageManager().setComponentEnabledSetting(
-                    new ComponentName(package_name, package_name + ".AmbientInterface-green"),
+                    new ComponentName(package_name, package_name + state),
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
 
             getPackageManager().setComponentEnabledSetting(
@@ -268,9 +275,10 @@ public class AmbientInterface extends Activity
                         heights = new int[arr.length];
 
                         heightsCount = 0;
-                        for(int j = 0; j < arr.length-1; j++ )
+                        for(int j = 0; j < arr.length-1; j++)
                         {
-                            if(arr[j].matches("-?\\d+(\\.\\d+)?")){
+                            if(arr[j].matches("-?\\d+(\\.\\d+)?"))
+                            {
                                 heights[heightsCount] = Integer.parseInt(arr[j]);
                                 heightsCount++;
                             }
