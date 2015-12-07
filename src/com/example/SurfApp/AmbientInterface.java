@@ -70,7 +70,11 @@ public class AmbientInterface extends Activity
     public void onDestroy()
     {
         super.onDestroy();
-        startService(new Intent(this, AmbientService.class));
+        Intent intent = new Intent(this, AmbientService.class);
+        intent.putExtra("min_wave", min_wave);
+        intent.putExtra("max_wave", max_wave);
+        intent.putExtra("location", user_location);
+        startService(intent);
     }
 
     /**
@@ -190,7 +194,6 @@ public class AmbientInterface extends Activity
 
         // For testing purposes only ------------------------------------------------
         test.setText(String.format("%d", avg_surf));
-
 
         if(avg_surf < min_wave)
         {
