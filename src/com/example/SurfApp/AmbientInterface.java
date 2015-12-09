@@ -30,11 +30,6 @@ import java.io.IOException;
  */
 public class AmbientInterface extends Activity
 {
-    private ImageView submit_button;
-    private ImageView down_button_min;
-    private ImageView up_button_min;
-    private ImageView down_button_max;
-    private ImageView up_button_max;
 
     private TextView surfRange;
     private TextView location;
@@ -42,13 +37,17 @@ public class AmbientInterface extends Activity
     // Test purposes only -----------------------------------------------------------
     private TextView test;
 
-    private Spinner spinner;
+    // button that confirms the user's settings
+    ImageView submit_button;
 
-    private View.OnClickListener submit;
-    private View.OnClickListener down_min;
-    private View.OnClickListener down_max;
-    private View.OnClickListener up_min;
-    private View.OnClickListener up_max;
+    // buttons that modify wave height
+    ImageView up_button_min;
+    ImageView down_button_min;
+
+    ImageView up_button_max;
+    ImageView down_button_max;
+
+    private Spinner spinner;
 
     private int min_wave = 0;
     private int max_wave = 1;
@@ -87,8 +86,6 @@ public class AmbientInterface extends Activity
     {
         location = (TextView) findViewById(R.id.location);
         surfRange = (TextView) findViewById(R.id.surfRange);
-
-        // Test purposes only ------------------------------------------------------------
         test = (TextView) findViewById(R.id.test);
 
         // button that confirms the user's settings
@@ -113,9 +110,8 @@ public class AmbientInterface extends Activity
         spinner.setAdapter(adapter);
 
         // submit button code below
-        submit = new View.OnClickListener() {
-            public void onClick(View v)
-            {
+        View.OnClickListener submit = new View.OnClickListener() {
+            public void onClick(View v) {
                 submitted();
             }
         };
@@ -123,11 +119,9 @@ public class AmbientInterface extends Activity
         submit_button.setOnClickListener(submit);
 
         // Clickable image views that modify the min surf height
-        down_min = new View.OnClickListener() {
-            public void onClick(View v)
-            {
-                if(min_wave > 0)
-                {
+        View.OnClickListener down_min = new View.OnClickListener() {
+            public void onClick(View v) {
+                if (min_wave > 0) {
                     min_wave--;
                     surfRange.setText(String.format("%d to %d feet", min_wave, max_wave));
                 }
@@ -136,11 +130,9 @@ public class AmbientInterface extends Activity
 
         down_button_min.setOnClickListener(down_min);
 
-        up_min = new View.OnClickListener() {
-            public void onClick(View v)
-            {
-                if(min_wave < max_wave - 1)
-                {
+        View.OnClickListener up_min = new View.OnClickListener() {
+            public void onClick(View v) {
+                if (min_wave < max_wave - 1) {
                     min_wave++;
                     surfRange.setText(String.format("%d to %d feet", min_wave, max_wave));
                 }
@@ -151,11 +143,9 @@ public class AmbientInterface extends Activity
 
 
         // Clickable image views that modify the max surf height
-        down_max = new View.OnClickListener() {
-            public void onClick(View v)
-            {
-                if(max_wave > min_wave + 1)
-                {
+        View.OnClickListener down_max = new View.OnClickListener() {
+            public void onClick(View v) {
+                if (max_wave > min_wave + 1) {
                     max_wave--;
                     surfRange.setText(String.format("%d to %d feet", min_wave, max_wave));
                 }
@@ -164,11 +154,9 @@ public class AmbientInterface extends Activity
 
         down_button_max.setOnClickListener(down_max);
 
-        up_max = new View.OnClickListener() {
-            public void onClick(View v)
-            {
-                if(max_wave < 100)
-                {
+        View.OnClickListener up_max = new View.OnClickListener() {
+            public void onClick(View v) {
+                if (max_wave < 100) {
                     max_wave++;
                     surfRange.setText(String.format("%d to %d feet", min_wave, max_wave));
                 }
@@ -192,7 +180,7 @@ public class AmbientInterface extends Activity
         user_location = spinner.getSelectedItem().toString();
 
         new FetchWebsiteData().execute();
-
+        
         // For testing purposes only ------------------------------------------------
         test.setText(String.format("%d", avg_surf));
 

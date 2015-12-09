@@ -65,12 +65,12 @@ public class AmbientService extends Service
         int offsetMin = 60 - Integer.parseInt(timeStamp.substring(2));
 
         //TimeUnit.MINUTES.sleep(offsetMin + offsetHour*60);
+        Log.d("test", "before wait for offset:" + Integer.toString(offsetHour) + " " + Integer.toString(offsetMin));
 
         while(true)
         {
             try
             {
-                Log.d("test", "before wait " + Integer.toString(offsetHour) + " " + Integer.toString(offsetMin));
                 TimeUnit.MINUTES.sleep(1);
                 Log.d("test", "after wait");
 
@@ -97,8 +97,7 @@ public class AmbientService extends Service
 
                         avg_surf = (heights[0] + heights[1]) / 2;
 
-                        Log.d("test", Integer.toString(heights[0]));
-                        Log.d("test", Integer.toString(heights[1]));
+                        Log.d("test", "Heights grabbed: " + Integer.toString(heights[0]) + " " + Integer.toString(heights[1]));
                     }
                 }
             }
